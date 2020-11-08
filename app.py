@@ -9,8 +9,8 @@ from db import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='heima'
-# 更改代码立刻显示更新
-app.DEBUG=True
+# # 更改代码立刻显示更新
+# app.DEBUG=True
 # 更改模板立刻显示更新
 app.jinja_env.auto_reload = True
 # 解决编码问题
@@ -35,9 +35,9 @@ def log_in():
             username = request.form.get('username')
             password = request.form.get('password')
             if password_verify(username=username,password=password)==True:
-                return 'success'
+                return render_template('manu.html')
             else:
-                return '密码错误'
+                flash('密码错误')
 
 
 
@@ -58,6 +58,17 @@ def get_hello_world(num):
                            url_1=url_1,
                            my_list = my_list
                            )
+# 学生信息页面
+@app.route('/id/<int:stu_id>')
+def stu_info(stu_id):
+    info = get_data("select * from stu where stu_id ='%s'"% stu_id)
+    print(info)
+    return render_template('content/stu_info.html',info=info)
+
+# 评教页面
+@app.route('/id/evaluate', methods=['GET','POST'])
+def evaluete_teaching():
+    write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
