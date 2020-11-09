@@ -8,11 +8,11 @@ from wtforms.validators import DataRequired, EqualTo
 from db import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'heima'
-# 更改代码立刻显示更新
+app.config['SECRET_KEY'] = 'efkjfklafdjsl'
+# # 更改代码立刻显示更新
 # app.DEBUG = True
-# 更改模板立刻显示更新
-app.jinja_env.auto_reload = True
+# # 更改模板立刻显示更新
+# app.jinja_env.auto_reload = True
 
 
 # 解决编码问题
@@ -38,6 +38,7 @@ class CourseForm(FlaskForm):
 @app.route('/', methods=['GET', 'POST'])
 def log_in():
     register_form = RegisterForm()
+    # return 'success!'
     if request.method == 'POST':
         # 调用validate_on_submit方法, 可以一次性执行完所有的验证函数的逻辑
         if register_form.validate_on_submit():
@@ -56,14 +57,14 @@ def log_in():
 
 
 # 主页
-@app.route('/<num>')
-def get_hello_world(num):
-    url_1 = 'www.baidu.com'
-    my_list = [1, 3, 5, 9]
-    return render_template('index.html',
-                           url_1=url_1,
-                           my_list=my_list
-                           )
+# @app.route('/<num>')
+# def get_hello_world(num):
+#     url_1 = 'www.baidu.com'
+#     my_list = [1, 3, 5, 9]
+#     return render_template('index.html',
+#                            url_1=url_1,
+#                            my_list=my_list
+#                            )
 
 
 # 学生信息页面
@@ -83,4 +84,4 @@ def evaluete_teaching(stu_id):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
