@@ -72,7 +72,7 @@ def log_in():
 def stu_info(stu_id):
     info = get_data("select * from stu where stu_id ='%s'" % stu_id)
     print(info)
-    return render_template('content/templates/stu_info.html', info=info)
+    return render_template('stu_info.html', info=info)
 
 
 # 评教页面
@@ -80,7 +80,7 @@ def stu_info(stu_id):
 def evaluete_teaching(stu_id):
     course_form = CourseForm()
     # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
-    return render_template('content/templates/course_selection.html', form=course_form)
+    return render_template('course_selection.html', form=course_form)
 
 
 if __name__ == '__main__':
