@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course selection</title>
+</head>
+<body>
+
+<form method="post">
+    {{ form.csrf_token() }}
+    {{ form.course.label }}{{ form.course }} <br>
+    {{ form.teacher.label }}{{ form.teacher }} <br>
+    {{ form.submit }}<br>
+{#    {% for message in get_flashed_messages() %}#}
+{#    {{ message }}#}
+{#    {% endfor %}#}
+
+</body>
+</html>
