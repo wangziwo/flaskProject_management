@@ -51,9 +51,9 @@ def log_in():
             password = request.form.get('password')
             if password_verify(username=username, password=password) == True:
                 # return 'success'
-                # session['username'] = '1'
-
-                # user= session['username']
+                session['username'] = '1'
+                #
+                # user = session['username']
                 return render_template("manu.html")
             else:
                 flash('密码错误')
@@ -77,9 +77,10 @@ def log_in():
 # 学生信息页面
 @app.route('/id/<int:stu_id>')
 def stu_info(stu_id):
+    # user_id=user
     info = get_data("select * from stu where stu_id ='%s'" % stu_id)
     print(info)
-    if user == '1':
+    if session.get('username') == '1':
 
         return render_template('stu_info.html', info=info)
     else:
@@ -93,10 +94,10 @@ def evaluete_teaching(stu_id):
     user_id = user
     course_form = CourseForm()
     # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
-    if user_id == '2':
-        return render_template('course_selection.html', form=course_form)
-    else:
-        return '请登陆'
+    # if user_id == '2':
+    return render_template('course_selection.html', form=course_form)
+    # else:
+    #     return '请登陆'
 
 
 if __name__ == '__main__':
