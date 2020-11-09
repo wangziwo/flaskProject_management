@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash,session
 # 导入wtf扩展的表单类
 from flask_wtf import FlaskForm
 # 导入自定义表单需要的字段
@@ -6,9 +6,10 @@ from wtforms import SubmitField, StringField, PasswordField
 # 导入wtf扩展提供的表单验证器
 from wtforms.validators import DataRequired, EqualTo
 from db import *
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'efkjfklafdjsl'
+app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改代码立刻显示更新
 # app.DEBUG = True
 # # 更改模板立刻显示更新
@@ -20,6 +21,9 @@ app.config['SECRET_KEY'] = 'efkjfklafdjsl'
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
+
+# 定义变量
+global user
 # 需要自定义一个表单类
 class RegisterForm(FlaskForm):
     username = StringField('学号:', validators=[DataRequired()])
@@ -47,6 +51,9 @@ def log_in():
             password = request.form.get('password')
             if password_verify(username=username, password=password) == True:
                 # return 'success'
+                # session['username'] = '1'
+
+                # user= session['username']
                 return render_template("manu.html")
             else:
                 flash('密码错误')
@@ -72,15 +79,24 @@ def log_in():
 def stu_info(stu_id):
     info = get_data("select * from stu where stu_id ='%s'" % stu_id)
     print(info)
-    return render_template('stu_info.html', info=info)
+    if user == '1':
+
+        return render_template('stu_info.html', info=info)
+    else:
+        return '请登录'
 
 
 # 评教页面
 @app.route('/id/<int:stu_id>/evaluate', methods=['GET', 'POST'])
 def evaluete_teaching(stu_id):
+
+    user_id = user
     course_form = CourseForm()
     # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
-    return render_template('course_selection.html', form=course_form)
+    if user_id == '2':
+        return render_template('course_selection.html', form=course_form)
+    else:
+        return '请登陆'
 
 
 if __name__ == '__main__':
