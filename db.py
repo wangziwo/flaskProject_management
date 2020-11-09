@@ -32,7 +32,7 @@ cursor = conn.cursor()
 #     print('登录失败')
 # 密码验证函数
 def password_verify(username, password):
-    sql = "select name from stu where stu_id='%s'" % (username)
+    sql = "select password from stu where stu_id='%s'" % (username)
     cursor.execute(sql)
     result = cursor.fetchone()
     if password == result[0]:
@@ -58,5 +58,5 @@ def write_data(sql):
     conn.commit()
 if __name__ == '__main__':
     # password_verify(1,'wang')
-    # print(get_data('select * from stu',0))
-    write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
+    print(get_data('select * from stu',0))
+    # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
