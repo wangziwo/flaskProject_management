@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, flash,session
+from flask import Flask, render_template, request, flash, session, redirect, url_for
+
 # 导入wtf扩展的表单类
 from flask_wtf import FlaskForm
 # 导入自定义表单需要的字段
@@ -7,6 +8,7 @@ from wtforms import SubmitField, StringField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
 from db import *
 import os
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -24,6 +26,8 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 # 定义变量
 global user
+
+
 # 需要自定义一个表单类
 class RegisterForm(FlaskForm):
     username = StringField('学号:', validators=[DataRequired()])
@@ -43,18 +47,23 @@ class CourseForm(FlaskForm):
 def log_in():
     register_form = RegisterForm()
     # return 'success!'
+    # print(url_for(menu))
     if request.method == 'POST':
+
         # 调用validate_on_submit方法, 可以一次性执行完所有的验证函数的逻辑
         if register_form.validate_on_submit():
+
             # 进入这里就表示所有的逻辑都验证成功
             username = request.form.get('username')
             password = request.form.get('password')
             if password_verify(username=username, password=password) == True:
                 # return 'success'
-                session['username'] = '1'
-                #
+                session['username'] = username
+                # print(url_for(menu))
                 # user = session['username']
-                return render_template("manu.html")
+                # return render_template("manu.html")
+
+                return redirect(url_for('menu'))
             else:
                 flash('密码错误')
         else:
@@ -64,14 +73,9 @@ def log_in():
 
 
 # 主页
-# @app.route('/<num>')
-# def get_hello_world(num):
-#     url_1 = 'www.baidu.com'
-#     my_list = [1, 3, 5, 9]
-#     return render_template('index.html',
-#                            url_1=url_1,
-#                            my_list=my_list
-#                            )
+@app.route('/menu')
+def menu():
+    return render_template("manu.html")
 
 
 # 学生信息页面
@@ -90,7 +94,6 @@ def stu_info(stu_id):
 # 评教页面
 @app.route('/id/<int:stu_id>/evaluate', methods=['GET', 'POST'])
 def evaluete_teaching(stu_id):
-
     user_id = user
     course_form = CourseForm()
     # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
@@ -99,6 +102,15 @@ def evaluete_teaching(stu_id):
     # else:
     #     return '请登陆'
 
+# 登陆验证
+@app.before_request
+def is_login():
+    print(request.path)
+    if request.path == '/login':
+        return None
+    # if session.get('username'):
+    #     return redirect(url_for('menu'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
