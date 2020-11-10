@@ -43,7 +43,7 @@ class CourseForm(FlaskForm):
 
 
 # 登陆界面
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def log_in():
     register_form = RegisterForm()
     # return 'success!'
@@ -59,6 +59,7 @@ def log_in():
             if password_verify(username=username, password=password) == True:
                 # return 'success'
                 session['username'] = username
+                print(session.get('username'))
                 # print(url_for(menu))
                 # user = session['username']
                 # return render_template("manu.html")
@@ -73,15 +74,18 @@ def log_in():
 
 
 # 主页
-@app.route('/menu')
+@app.route('/')
 def menu():
     return render_template("manu.html")
-
+# # 主页
+# @app.route('/')
+# def menu():
+#     return redirect(url_for('menu'))
 
 # 学生信息页面
-@app.route('/id/<int:stu_id>')
-def stu_info(stu_id):
-    # user_id=user
+@app.route('/stu_info')
+def stu_info():
+    stu_id =session.get('username')
     info = get_data("select * from stu where stu_id ='%s'" % stu_id)
     print(info)
     if session.get('username') == '1':
@@ -92,9 +96,9 @@ def stu_info(stu_id):
 
 
 # 评教页面
-@app.route('/id/<int:stu_id>/evaluate', methods=['GET', 'POST'])
-def evaluete_teaching(stu_id):
-    user_id = user
+@app.route('/evaluate', methods=['GET', 'POST'])
+def evaluete_teaching():
+    user_id = session.get('username')
     course_form = CourseForm()
     # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
     # if user_id == '2':
@@ -105,12 +109,16 @@ def evaluete_teaching(stu_id):
 # 登陆验证
 @app.before_request
 def is_login():
-    print(request.path)
     if request.path == '/login':
+        # print(request.path)
         return None
-    # if session.get('username'):
-    #     return redirect(url_for('menu'))
-    return redirect(url_for('login'))
+    else:
+        if session.get('username'):
+            # print(session.get('username'))
+            return None
+        else:
+
+            return redirect(url_for('log_in'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
