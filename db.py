@@ -26,7 +26,7 @@ conn=pymysql.connect(host='127.0.0.1',             #此处必须是是127.0.0.1
                     port=server.local_bind_port,
                     user='root',                  #mysql的登录账号admin
                     password='Wa123456.',             #mysql的登录密码pwd
-                    db='test',                   #mysql中要访问的数据表
+                    db='management_db',                   #mysql中要访问的数据表
                     charset='utf8')               #表的字符集
 
 
@@ -55,14 +55,14 @@ cursor = conn.cursor()
 #     print('登录失败')
 # 密码验证函数
 def password_verify(username, password):
-    sql = "select password from stu where stu_id='%s'" % (username)
+    sql = "select student_password from student_info where student_id='%s' " % (username)
     cursor.execute(sql)
     result = cursor.fetchone()
     if password == result[0]:
-        print(1)
+        # print(1)
         return True
     else:
-        print(0)
+        # print(0)
         return False
 
 
@@ -80,6 +80,6 @@ def write_data(sql):
     cursor.execute(sql)
     conn.commit()
 if __name__ == '__main__':
-    # password_verify(1,'wang')
-    print(get_data('select * from stu',0))
+    # print(password_verify('2001','2001'))
+    print(get_data('select * from admin_info',0))
     # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')

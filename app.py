@@ -76,6 +76,7 @@ def log_in():
 # 主页
 @app.route('/')
 def menu():
+
     return render_template("manu.html")
 # # 主页
 # @app.route('/')
@@ -86,7 +87,7 @@ def menu():
 @app.route('/stu_info')
 def stu_info():
     stu_id =session.get('username')
-    info = get_data("select * from stu where stu_id ='%s'" % stu_id)
+    info = get_data("select * from student_info where student_id ='%s'" % stu_id)
     print(info)
     if session.get('username') == '1':
 
