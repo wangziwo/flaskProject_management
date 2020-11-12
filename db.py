@@ -81,5 +81,5 @@ def write_data(sql):
     conn.commit()
 if __name__ == '__main__':
     # print(password_verify('2002','2002'))
-    print(get_data(sql_qu_score('2001'),0))
+    print(get_data(sql_qu_course_teacher_info('2001'),0))
     # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')

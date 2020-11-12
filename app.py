@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改代码立刻显示更新
 # app.DEBUG = True
 # # 更改模板立刻显示更新
-# app.jinja_env.auto_reload = True
+app.jinja_env.auto_reload = True
 
 
 # 解决编码问题
@@ -77,7 +77,7 @@ def menu():
     # print(stu_info_url)
     return render_template("manu2.html")
     # return render_template("manu.html")
-
+# TODO 右上角显示
 
 # # 主页
 # @app.route('/')
@@ -98,16 +98,38 @@ def stu_info():
 
 
 # 评教页面
-@app.route('/evaluate', methods=['GET', 'POST'])
-def evaluete_teaching():
-    user_id = session.get('username')
-    course_form = CourseForm()
-    # write_data("insert into stu values ('2004','li','2004','软件182','软件工程'")
-    # if user_id == '2':
-    return render_template('course_selection.html', form=course_form)
-    # else:
-    #     return '请登陆'
 
+# 定义一个选课表单类
+class EvaluateForm(FlaskForm):
+    course = StringField('课程:', validators=[DataRequired()])
+    teacher = StringField('教师:', validators=[DataRequired()])
+    submit = SubmitField('提交')
+
+
+@app.route('/evaluate', methods=['GET', 'POST'])
+def evaluete():
+    if session.get('username'):
+        stu_id = session.get('username')
+        course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
+        # 获取输入框内容
+
+        if request.method == 'POST':
+            formDict = request.form.to_dict()
+            print(formDict)
+        return render_template('evaluate.html', course_teacher_info=course_teacher_info)
+    else:
+        return redirect(url_for('log_in'))
+# 考试信息页面
+@app.route('/exam_info', methods=['GET', 'POST'])
+def exam_info():
+    if session.get('username'):
+        stu_id = session.get('username')
+        exam = get_data(sql_qu_exam(stu_id), 0)
+        return render_template('exam_info.html', exam=exam)
+    else:
+        return redirect(url_for('log_in'))
+
+# TODO 网页出错跳转提醒
 
 # 登陆验证
 @app.before_request

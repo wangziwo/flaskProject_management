@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam info</title>
+</head>
+<body>
+{% for e in exam %}
+    科目：{{ e[0] }}
+    时间：{{ e[2] }}
+    地点:{{ e[1] }}
+    学分：{{ e[3] }}<br>
+{% endfor %}
+</body>
+</html>
