@@ -9,11 +9,14 @@
 
 <form method="post">
     {{ form.csrf_token() }}
+
     {{ form.username.label }}{{ form.username }} <br>
     {{ form.password.label }}{{ form.password }} <br>
     {{ form.submit }}<br>
 
-
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
 </form>
 
 </body>

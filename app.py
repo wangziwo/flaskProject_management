@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
-
+import time
 # 导入wtf扩展的表单类
 from flask_wtf import FlaskForm
 # 导入自定义表单需要的字段
@@ -16,7 +16,6 @@ app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改模板立刻显示更新
 app.jinja_env.auto_reload = True
 
-
 # 解决编码问题
 # import sys
 # reload(sys)
@@ -32,6 +31,15 @@ class RegisterForm(FlaskForm):
     username = StringField('学号:', validators=[DataRequired()])
     password = PasswordField('密码:', validators=[DataRequired()])
     submit = SubmitField('登陆')
+
+
+# 需要自定义一个表单类
+class ChangePasswordForm(FlaskForm):
+    # username = StringField('学号:', validators=[DataRequired()])
+    password_old = PasswordField('原密码:', validators=[DataRequired()])
+    password_new = PasswordField('新密码:', validators=[DataRequired()])
+    password_new_2 = PasswordField('确认密码:', validators=[DataRequired(), EqualTo('password_new', '新密码输入不一致')])
+    submit = SubmitField('提交')
 
 
 # 定义一个选课表单类
@@ -77,6 +85,8 @@ def menu():
     # print(stu_info_url)
     return render_template("manu2.html")
     # return render_template("manu.html")
+
+
 # TODO 右上角显示
 
 # # 主页
@@ -129,11 +139,10 @@ def evaluate():
                 write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
                 # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
                 # print(get_data(sql),len(get_data(sql)))
-                return '已经评教'
-        return render_template('evaluate.html', course_teacher_info=course_teacher_info,infu_num=infu_num)
+            return '已经评教'
+        return render_template('evaluate.html', course_teacher_info=course_teacher_info, infu_num=infu_num)
     else:
         return redirect(url_for('log_in'))
-
 
 
 # 考试信息页面
@@ -145,6 +154,7 @@ def exam_info():
         return render_template('exam_info.html', exam=exam)
     else:
         return redirect(url_for('log_in'))
+
 
 # TODO 网页出错跳转提醒
 
@@ -168,19 +178,52 @@ def logout():
     # 清空session
     session.clear()
     return redirect(url_for('log_in'))
+
+
 # 成绩查询
 @app.route('/score')
 def score():
-
     stu_id = session.get('username')
-    score = get_data(sql_qu_score(stu_id),0)
+    score = get_data(sql_qu_score(stu_id), 0)
     # print(info)
     if session.get('username'):
         return render_template('stu_score.html', score=score)
     else:
         return redirect(url_for('log_in'))
+
+
 # TODO 添加查询对应课程名称
 
+# 密码修改
+@app.route('/change_pd', methods=['GET', 'POST'])
+def change_pd():
+    change_password_form = ChangePasswordForm()
+    if request.method == 'POST':
+
+        # 调用validate_on_submit方法, 可以一次性执行完所有的验证函数的逻辑
+        if change_password_form.validate_on_submit():
+
+            # 进入这里就表示所有的逻辑都验证成功
+            student_id = session.get('username')
+            password_old = request.form.get('password_old')
+            new_password = request.form.get('password_new')
+            if password_verify(student_id, password_old):
+                # return 'success'
+                sql = "update student_info set student_password = '%s' where student_id = '%s'" % (new_password, student_id)
+                write_data(sql)
+                print(session.get('username'))
+                # print(url_for(menu))
+                # user = session['username']
+                # return render_template("manu.html")
+                flash('密码修改成功,下次登陆需要使用新密码')
+                # time.sleep(3)
+                # session.clear()
+                # return redirect(url_for('log_in'))
+            else:
+                flash('原密码错误，请重新输入！')
+        else:
+            flash('两次密码不一样！')
+    return render_template('change_pd.html', form=change_password_form)
 
 
 if __name__ == '__main__':
