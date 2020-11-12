@@ -79,7 +79,10 @@ def get_data(sql, quantity=1):
 def write_data(sql):
     cursor.execute(sql)
     conn.commit()
+
 if __name__ == '__main__':
     # print(password_verify('2002','2002'))
-    print(get_data(sql_qu_course_teacher_info('2001'),0))
+    m = get_data("select * from evaluate_info where student_id = '2005'", 0)
+    print(m , type(m),len(m))
     # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
+    write_data(sql_evaluate_score_write('2001','111','10'))

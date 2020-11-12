@@ -59,6 +59,7 @@ def sql_qu_course_teacher_info(student_id):
     sql = '''
         SELECT
         # class_info.student_id, 
+        class_info.class_id, 
         course_info.course_name, 
         teacher_info.teacher_name, 
         teacher_info.teacher_sex, 
@@ -79,3 +80,13 @@ def sql_qu_course_teacher_info(student_id):
         class_info.student_id = 'rp_student_id'
         '''
     return sql.replace('rp_student_id', student_id)
+
+# 评教分数写入
+def sql_evaluate_score_write(student_id,class_id,teacher_score):
+    sql = '''INSERT INTO evaluate_info (student_id,class_id,teacher_score) 
+                    VALUES ('rp_student_id','rp_class_id','rp_teacher_score'
+                    );'''
+    sql = sql.replace('rp_student_id',str(student_id))
+    sql = sql.replace('rp_class_id',str(class_id))
+    sql = sql.replace('rp_teacher_score',str(teacher_score))
+    return sql

@@ -107,18 +107,35 @@ class EvaluateForm(FlaskForm):
 
 
 @app.route('/evaluate', methods=['GET', 'POST'])
-def evaluete():
+def evaluate():
     if session.get('username'):
         stu_id = session.get('username')
         course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
+        infu_num = len(course_teacher_info)
+        sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+        print(get_data(sql), type(get_data(sql)))
+        if get_data(sql):
+            return '已经评教'
         # 获取输入框内容
 
         if request.method == 'POST':
-            formDict = request.form.to_dict()
-            print(formDict)
-        return render_template('evaluate.html', course_teacher_info=course_teacher_info)
+            formdict = request.form.to_dict()
+            print(formdict)
+            for f in formdict:
+                class_id = course_teacher_info[int(f)][0]
+                # print(class_id)
+                # print(f,formdict[f],type(f))
+                # print(formdict)
+                write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
+                # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+                # print(get_data(sql),len(get_data(sql)))
+                return '已经评教'
+        return render_template('evaluate.html', course_teacher_info=course_teacher_info,infu_num=infu_num)
     else:
         return redirect(url_for('log_in'))
+
+
+
 # 考试信息页面
 @app.route('/exam_info', methods=['GET', 'POST'])
 def exam_info():
