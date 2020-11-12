@@ -11,7 +11,7 @@
 # 云端mysql
 from sshtunnel import SSHTunnelForwarder
 import pymysql
-
+from str_sql import *
 #通过SSH连接云服务器
 server=SSHTunnelForwarder(
     ssh_address_or_host=('39.97.97.210',22),    #云服务器地址IP和端口port
@@ -80,6 +80,6 @@ def write_data(sql):
     cursor.execute(sql)
     conn.commit()
 if __name__ == '__main__':
-    # print(password_verify('2001','2001'))
-    print(get_data('select * from admin_info',0))
+    # print(password_verify('2002','2002'))
+    print(get_data(sql_qu_score.replace('rp_student_id','2001'),0))
     # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
