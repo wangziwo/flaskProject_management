@@ -134,7 +134,7 @@ def logout():
 def score():
 
     stu_id = session.get('username')
-    score = get_data("select * from student_score where student_id ='%s'" % stu_id,0)
+    score = get_data(sql_qu_score(stu_id),0)
     # print(info)
     if session.get('username'):
         return render_template('stu_score.html', score=score)

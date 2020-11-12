@@ -5,6 +5,10 @@
     <title>Score</title>
 </head>
 <body>
-<p>{{ score }}</p>
+<p> </p>
+{% for s in score %}
+{{ s[0] }}:{{ s[1] }}
+{% endfor %}
+
 </body>
 </html>
