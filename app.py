@@ -118,24 +118,26 @@ def message():
     if session.get('username'):
         message_form = MessageForm()
         stu_id = session.get('username')
-        course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
+        course_teacher_info = get_data(sql_message_teacher_info(stu_id), 0)
         info_num = len(course_teacher_info)
         # 转为列表
         ls_course_teacher_info = []
         for cour in course_teacher_info:
-            ls = list(cour)
+            l1 = cour[0]
+            l2 = cour[1:]
+            ls = [l1, l2]
             ls_course_teacher_info.append(ls)
-
+        message_form.teacher.choices = ls_course_teacher_info
         # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
         # print(get_data(sql), type(get_data(sql)))
         # 获取输入框内容
 
         if request.method == 'POST':
-            # message_form.teacher.choices=
-            formdict = request.form.get('teacher')
+
+            class_id = request.form.get('teacher')
 
             message_info = request.form.get('message')
-            print(formdict, message_info)
+            print(class_id, message_info)
             # for f in formdict:
             #     class_id = course_teacher_info[int(f)][0]
             # print(class_id)

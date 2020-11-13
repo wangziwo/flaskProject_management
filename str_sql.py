@@ -90,3 +90,27 @@ def sql_evaluate_score_write(student_id,class_id,teacher_score):
     sql = sql.replace('rp_class_id',str(class_id))
     sql = sql.replace('rp_teacher_score',str(teacher_score))
     return sql
+
+# 留言教师信息获取
+def sql_message_teacher_info(student_id):
+    sql = '''SELECT
+    teacher_info.teacher_id,
+    teacher_info.teacher_name,
+    course_info.course_name,
+    teacher_info.teacher_Titles,
+    teacher_info.teacher_pro
+    FROM
+    class_info
+    INNER
+    JOIN
+    course_info
+    ON
+    class_info.course_id = course_info.course_id
+    INNER
+    JOIN
+    teacher_info
+    ON
+    class_info.teacher_id = teacher_info.teacher_id
+    where
+    class_info.student_id = "rp_student_id" '''
+    return sql.replace('rp_student_id', student_id)
