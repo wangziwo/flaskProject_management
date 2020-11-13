@@ -86,10 +86,14 @@ if __name__ == '__main__':
     # print(m , type(m),len(m))
     # # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
     # write_data(sql_evaluate_score_write('2001','111','10'))
-    # course_teacher_info = get_data(sql_qu_course_teacher_info('2001'), 0)
-    # l = []
-    # for cour in course_teacher_info:
-    #     ls = list(cour)
-    #     l.append(ls)
-    # # course_teacher_info = list(course_teacher_info)
-    # print(l)
+    course_teacher_info = get_data(sql_qu_course_teacher_info('2001'), 0)
+    print(course_teacher_info)
+    l = []
+    for cour in course_teacher_info:
+        l1 = cour[0]
+        l2 = cour[1:]
+        ls = [l1,l2]
+        l.append(ls)
+
+    # course_teacher_info = list(course_teacher_info)
+    print(l)

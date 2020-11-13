@@ -9,18 +9,18 @@
 
 
 <form method="post">
-{#            {{ form.csrf_token() }}#}
-{#        {{ form.teacher.label }}{{ form.teacher }} <br>#}
-{#        {{ form.message.label }}{{ form.message }} <br>#}
-{#            {{ form.submit }}<br>#}
-{#            <button class="but" type="submit">登录</button>#}
-{#    {% for info in course_teacher_info %}#}
-{#    <label>{{info}}</label><input type="text" name={{ (course_teacher_info.index(info)) }}><br>#}
-{##}
-{#    {% endfor %}#}
+    {{ form.csrf_token() }}
+    {{ form.teacher.label }}{{ form.teacher }} <br>
+    {{ form.message.label }}{{ form.message }} <br>
+    {{ form.submit }}<br>
+{#    <button class="but" type="submit">提交</button>#}
+    {#    {% for info in course_teacher_info %}#}
+    {#    <label>{{info}}</label><input type="text" name={{ (course_teacher_info.index(info)) }}><br>#}
+    {##}
+    {#    {% endfor %}#}
 
-{#    <label>用户名2:</label><input type="text" name="username2"><br>#}
-    <input type="submit" value="提交"><br>
+    {#    <label>用户名2:</label><input type="text" name="username2"><br>#}
+{#    <input type="submit" value="提交"><br>#}
 </form>
 </body>
 </html>

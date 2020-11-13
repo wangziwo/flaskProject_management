@@ -1,18 +1,9 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
-import time
-# 导入wtf扩展的表单类
-from flask_wtf import FlaskForm
-# 导入自定义表单需要的字段
-from wtforms import *
-# 导入wtf扩展提供的表单验证器
-from wtforms.validators import DataRequired, EqualTo
-from db import *
-import os
+from head import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改代码立刻显示更新
-# app.DEBUG = True
+app.DEBUG = True
 # # 更改模板立刻显示更新
 app.jinja_env.auto_reload = True
 
@@ -26,43 +17,6 @@ app.jinja_env.auto_reload = True
 global user
 
 
-# 需要自定义一个表单类
-class RegisterForm(FlaskForm):
-    username = StringField('学号:', validators=[DataRequired()])
-    password = PasswordField('密码:', validators=[DataRequired()])
-    submit = SubmitField('登陆')
-
-
-# 需要自定义一个表单类
-class ChangePasswordForm(FlaskForm):
-    # username = StringField('学号:', validators=[DataRequired()])
-    password_old = PasswordField('原密码:', validators=[DataRequired()])
-    password_new = PasswordField('新密码:', validators=[DataRequired()])
-    password_new_2 = PasswordField('确认密码:', validators=[DataRequired(), EqualTo('password_new', '新密码输入不一致')])
-    submit = SubmitField('提交')
-
-
-# 定义一个选课表单类
-class CourseForm(FlaskForm):
-    course = StringField('课程:', validators=[DataRequired()])
-    teacher = StringField('教师:', validators=[DataRequired()])
-    submit = SubmitField('提交')
-# 定义一个留言信息类
-class MessageForm(FlaskForm):
-    teacher = SelectField(
-        label='类别',
-        validators=[DataRequired('请选择标签')],
-        render_kw={
-            'class': 'form-control'
-        },
-
-        choices=[(1, '情感'), (2, '星座'), (3, '爱情')],
-        # choices=[],
-        # default=0,
-        coerce=int
-    )
-    message = TextAreaField('留言:', validators=[DataRequired()])
-    submit = SubmitField('提交')
 # 登陆界面
 @app.route('/login', methods=['GET', 'POST'])
 def log_in():
@@ -92,15 +46,17 @@ def log_in():
     return render_template('login.html', form=register_form)
 
 
+# TODO 账号错误解决
+
 # 主页
 @app.route('/')
 def menu():
     # stu_info_url = url_for(stu_info)
     # print(stu_info_url)
-    stu_id=session.get('username')
+    stu_id = session.get('username')
     sql = "select student_name from student_info where student_id = '%s'" % stu_id
-    stu_name=get_data(sql)
-    return render_template("manu2.html",user_id =stu_id,user_name = stu_name[0])
+    stu_name = get_data(sql)
+    return render_template("manu2.html", user_id=stu_id, user_name=stu_name[0])
     # return render_template("manu.html")
 
 
@@ -125,12 +81,6 @@ def stu_info():
 
 
 # 评教页面
-
-# 定义一个选课表单类
-class EvaluateForm(FlaskForm):
-    course = StringField('课程:', validators=[DataRequired()])
-    teacher = StringField('教师:', validators=[DataRequired()])
-    submit = SubmitField('提交')
 
 
 @app.route('/evaluate', methods=['GET', 'POST'])
@@ -162,40 +112,45 @@ def evaluate():
         return redirect(url_for('log_in'))
 
 
-#
-# # 学生留言
-# @app.route('/message', methods=['GET', 'POST'])
-# def message():
-#     if session.get('username'):
-#         message_form= MessageForm()
-#         stu_id = session.get('username')
-#         course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
-#         info_num = len(course_teacher_info)
-#         # 转为列表
-#         ls_course_teacher_info = []
-#         for cour in course_teacher_info:
-#             ls = list(cour)
-#             ls_course_teacher_info.append(ls)
-#
-#         sql = "select * from evaluate_info where student_id = '%s'" % stu_id
-#         print(get_data(sql), type(get_data(sql)))
-#         # 获取输入框内容
-#
-#         if request.method == 'POST':
-#             formdict = request.form.to_dict()
-#             print(formdict)
-#             for f in formdict:
-#                 class_id = course_teacher_info[int(f)][0]
-#                 # print(class_id)
-#                 # print(f,formdict[f],type(f))
-#                 # print(formdict)
-#                 write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
-#                 # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
-#                 # print(get_data(sql),len(get_data(sql)))
-#             return '已经评教'
-#         return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,form=message_form)
-#     else:
-#         return redirect(url_for('log_in'))
+# 学生留言
+@app.route('/message', methods=['GET', 'POST'])
+def message():
+    if session.get('username'):
+        message_form = MessageForm()
+        stu_id = session.get('username')
+        course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
+        info_num = len(course_teacher_info)
+        # 转为列表
+        ls_course_teacher_info = []
+        for cour in course_teacher_info:
+            ls = list(cour)
+            ls_course_teacher_info.append(ls)
+
+        # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+        # print(get_data(sql), type(get_data(sql)))
+        # 获取输入框内容
+
+        if request.method == 'POST':
+            # message_form.teacher.choices=
+            formdict = request.form.get('teacher')
+
+            message_info = request.form.get('message')
+            print(formdict, message_info)
+            # for f in formdict:
+            #     class_id = course_teacher_info[int(f)][0]
+            # print(class_id)
+            # print(f,formdict[f],type(f))
+            # print(formdict)
+            # write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
+            # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+            # print(get_data(sql),len(get_data(sql)))
+            return '留言成功！'
+        return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,
+                               form=message_form)
+    else:
+        return redirect(url_for('log_in'))
+
+
 #
 
 # 考试信息页面
@@ -262,7 +217,8 @@ def change_pd():
             new_password = request.form.get('password_new')
             if password_verify(student_id, password_old):
                 # return 'success'
-                sql = "update student_info set student_password = '%s' where student_id = '%s'" % (new_password, student_id)
+                sql = "update student_info set student_password = '%s' where student_id = '%s'" % (
+                new_password, student_id)
                 write_data(sql)
                 print(session.get('username'))
                 # print(url_for(menu))
