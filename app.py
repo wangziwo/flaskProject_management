@@ -3,7 +3,7 @@ import time
 # 导入wtf扩展的表单类
 from flask_wtf import FlaskForm
 # 导入自定义表单需要的字段
-from wtforms import SubmitField, StringField, PasswordField
+from wtforms import *
 # 导入wtf扩展提供的表单验证器
 from wtforms.validators import DataRequired, EqualTo
 from db import *
@@ -47,8 +47,22 @@ class CourseForm(FlaskForm):
     course = StringField('课程:', validators=[DataRequired()])
     teacher = StringField('教师:', validators=[DataRequired()])
     submit = SubmitField('提交')
+# 定义一个留言信息类
+class MessageForm(FlaskForm):
+    teacher = SelectField(
+        label='类别',
+        validators=[DataRequired('请选择标签')],
+        render_kw={
+            'class': 'form-control'
+        },
 
-
+        choices=[(1, '情感'), (2, '星座'), (3, '爱情')],
+        # choices=[],
+        # default=0,
+        coerce=int
+    )
+    message = TextAreaField('留言:', validators=[DataRequired()])
+    submit = SubmitField('提交')
 # 登陆界面
 @app.route('/login', methods=['GET', 'POST'])
 def log_in():
@@ -83,7 +97,10 @@ def log_in():
 def menu():
     # stu_info_url = url_for(stu_info)
     # print(stu_info_url)
-    return render_template("manu2.html")
+    stu_id=session.get('username')
+    sql = "select student_name from student_info where student_id = '%s'" % stu_id
+    stu_name=get_data(sql)
+    return render_template("manu2.html",user_id =stu_id,user_name = stu_name[0])
     # return render_template("manu.html")
 
 
@@ -144,6 +161,42 @@ def evaluate():
     else:
         return redirect(url_for('log_in'))
 
+
+#
+# # 学生留言
+# @app.route('/message', methods=['GET', 'POST'])
+# def message():
+#     if session.get('username'):
+#         message_form= MessageForm()
+#         stu_id = session.get('username')
+#         course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
+#         info_num = len(course_teacher_info)
+#         # 转为列表
+#         ls_course_teacher_info = []
+#         for cour in course_teacher_info:
+#             ls = list(cour)
+#             ls_course_teacher_info.append(ls)
+#
+#         sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+#         print(get_data(sql), type(get_data(sql)))
+#         # 获取输入框内容
+#
+#         if request.method == 'POST':
+#             formdict = request.form.to_dict()
+#             print(formdict)
+#             for f in formdict:
+#                 class_id = course_teacher_info[int(f)][0]
+#                 # print(class_id)
+#                 # print(f,formdict[f],type(f))
+#                 # print(formdict)
+#                 write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
+#                 # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
+#                 # print(get_data(sql),len(get_data(sql)))
+#             return '已经评教'
+#         return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,form=message_form)
+#     else:
+#         return redirect(url_for('log_in'))
+#
 
 # 考试信息页面
 @app.route('/exam_info', methods=['GET', 'POST'])
