@@ -97,5 +97,8 @@ if __name__ == '__main__':
     #
     # # course_teacher_info = list(course_teacher_info)
     # print(l)
-    write_data('''insert into message_info (student_id, class_id, message) 
-                           VALUES ("%s","%s","%s")''' % ('2001','111','message_info'))
+    # write_data('''insert into message_info (student_id, class_id, message)
+    #                        VALUES ("%s","%s","%s")''' % ('2001','111','message_info'))
+    # sql = "insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003')
+    # write_data("insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003'))
+    print(sql_select_result('2001'))

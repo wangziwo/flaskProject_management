@@ -3,7 +3,7 @@ from head import *
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改代码立刻显示更新
-app.DEBUG = True
+# app.DEBUG = True
 # # 更改模板立刻显示更新
 app.jinja_env.auto_reload = True
 
@@ -158,7 +158,6 @@ def message():
         return redirect(url_for('log_in'))
 
 
-# TODO 未完成
 
 # 考试信息页面
 @app.route('/exam_info', methods=['GET', 'POST'])
@@ -247,16 +246,17 @@ def change_pd():
 @app.route('/select', methods=['GET', 'POST'])
 def select():
     if session.get('username'):
-        # stu_id = session.get('username')
-        # course_teacher_info = get_data(sql_message_teacher_info(stu_id), 0)
-        # info_num = len(course_teacher_info)
-        # # 转为列表
-        # ls_course_teacher_info = []
-        # for cour in course_teacher_info:
-        #     l1 = cour[0]
-        #     l2 = cour[1:]
-        #     ls = [l1, l2]
-        #     ls_course_teacher_info.append(ls)
+        stu_id = session.get('username')
+        course_info = get_data("select * from course_info", 0)
+        info_num = len(course_info)
+        # 转为列表
+        ls_course_info = []
+        for cour in course_info:
+            l1 = cour[0]
+            l2 = cour[1:]
+            ls = [l1, l2]
+            ls_course_info.append(ls)
+        print(course_info)
         # message_form.teacher.choices = ls_course_teacher_info
         #
         if request.method == 'POST':
@@ -268,10 +268,56 @@ def select():
             #     return '留言成功！'
             # return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,
             #                        form=message_form)
-            hobby_list = request.form.getlist('hobby')
-            print(hobby_list)
+            select_list = request.form.getlist('select_info')
+            print("select_list:",select_list)
+            for se in select_list:
+                write_data("insert into class_info (student_id,course_id) values ('%s','%s')" % (stu_id,se))
             return '选课成功'
-        return render_template('select.html')
+        return render_template('select.html',course_info= course_info)
+    else:
+        return redirect(url_for('log_in'))
+# TODO 去除重复
+# TODO 增加专业代号，区分选课
+
+
+
+# 查询选课结果
+@app.route('/select_result')
+def select_result():
+    if session.get('username'):
+        stu_id = session.get('username')
+        result = get_data(sql_select_result(stu_id), 0)
+        # print(info)
+        return render_template('select_result.html', result=result)
+    else:
+        return redirect(url_for('log_in'))
+
+# 课程退选
+
+@app.route('/deselect', methods=['GET', 'POST'])
+def deselect():
+    if session.get('username'):
+        stu_id = session.get('username')
+        result = get_data(sql_deselect_info(stu_id), 0)
+        print(result)
+        if request.method == 'POST':
+            deselect_list = request.form.getlist('deselect_info')
+            print("deselect_list:", deselect_list)
+            for de in deselect_list:
+                write_data("delete from class_info  where class_id  = '%s'" % ( de))
+
+            return '退选成功'
+        return render_template('deselect.html', result=result)
+    else:
+        return redirect(url_for('log_in'))
+# 课表显示
+@app.route('/schedule')
+def schedule():
+    if session.get('username'):
+        stu_id = session.get('username')
+        schedule = get_data(sql_select_result(stu_id), 0)
+        # print(info)
+        return render_template('schedule.html', schedule=schedule)
     else:
         return redirect(url_for('log_in'))
 

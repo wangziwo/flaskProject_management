@@ -91,6 +91,56 @@ def sql_evaluate_score_write(student_id,class_id,teacher_score):
     sql = sql.replace('rp_teacher_score',str(teacher_score))
     return sql
 
+# 选课结果查询
+def sql_select_result(student_id):
+    sql = '''
+    SELECT
+        class_info.student_id, 
+        course_info.course_name, 
+        course_info.course_credit, 
+        course_info.course_place, 
+        course_info.course_period, 
+        teacher_info.teacher_name
+    FROM
+        class_info
+        INNER JOIN
+        course_info
+        ON 
+            class_info.course_id = course_info.course_id
+        INNER JOIN
+        teacher_info
+        ON 
+            course_info.teacher_id = teacher_info.teacher_id
+    WHERE
+            class_info.student_id = 'rp_student_id' '''
+    sql = sql.replace('rp_student_id',str(student_id))
+    return sql
+
+# 退选信息获取
+def sql_deselect_info(student_id):
+    sql = '''
+    SELECT
+        class_info.class_id, 
+        course_info.course_name, 
+        course_info.course_credit, 
+        course_info.course_place, 
+        course_info.course_period, 
+        teacher_info.teacher_name
+    FROM
+        class_info
+        INNER JOIN
+        course_info
+        ON 
+            class_info.course_id = course_info.course_id
+        INNER JOIN
+        teacher_info
+        ON 
+            course_info.teacher_id = teacher_info.teacher_id
+    WHERE
+            class_info.student_id = 'rp_student_id' '''
+    sql = sql.replace('rp_student_id',str(student_id))
+    return sql
+
 # 留言教师信息获取
 def sql_message_teacher_info(student_id):
     sql = '''SELECT

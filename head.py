@@ -36,7 +36,7 @@ class CourseForm(FlaskForm):
 # 定义一个留言信息类
 class MessageForm(FlaskForm):
     teacher = SelectField(
-        label='类别',
+        label='教师',
         validators=[DataRequired('请选择标签')],
         render_kw={
             'class': 'form-control'
