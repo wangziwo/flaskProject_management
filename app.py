@@ -138,6 +138,11 @@ def message():
 
             message_info = request.form.get('message')
             print(class_id, message_info)
+            sql = '''insert into message_info (student_id, class_id, message) 
+                       VALUES ("%s","%s","%s")''' % (stu_id,class_id,message_info)
+
+            print(sql)
+            write_data(sql)
             # for f in formdict:
             #     class_id = course_teacher_info[int(f)][0]
             # print(class_id)
@@ -153,7 +158,7 @@ def message():
         return redirect(url_for('log_in'))
 
 
-#
+# TODO 未完成
 
 # 考试信息页面
 @app.route('/exam_info', methods=['GET', 'POST'])
@@ -237,5 +242,50 @@ def change_pd():
     return render_template('change_pd.html', form=change_password_form)
 
 
+
+# 课程正选
+@app.route('/select', methods=['GET', 'POST'])
+def select():
+    if session.get('username'):
+        # stu_id = session.get('username')
+        # course_teacher_info = get_data(sql_message_teacher_info(stu_id), 0)
+        # info_num = len(course_teacher_info)
+        # # 转为列表
+        # ls_course_teacher_info = []
+        # for cour in course_teacher_info:
+        #     l1 = cour[0]
+        #     l2 = cour[1:]
+        #     ls = [l1, l2]
+        #     ls_course_teacher_info.append(ls)
+        # message_form.teacher.choices = ls_course_teacher_info
+        #
+        if request.method == 'POST':
+            #
+            #     class_id = request.form.get('teacher')
+            #
+            #     message_info = request.form.get('message')
+            #     print(class_id, message_info)
+            #     return '留言成功！'
+            # return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,
+            #                        form=message_form)
+            hobby_list = request.form.getlist('hobby')
+            print(hobby_list)
+            return '选课成功'
+        return render_template('select.html')
+    else:
+        return redirect(url_for('log_in'))
+
+
 if __name__ == '__main__':
     app.run()
+    # except sshtunnel.BaseSSHTunnelForwarderError:
+    #     print("无法连接到网络！")
+    #
+    # else:
+    #     print("程序异常！")
+    # try:
+    #     app.run()
+    # except Exception as ex:
+    #     template = "An exception of type {0} occurred. Arguments:{1!r}"
+    # message = template.format(type(ex).__name__, ex.args)
+    # print(message)
