@@ -1,3 +1,4 @@
+# encoding: utf-8
 # # 本地mysql
 # import pymysql
 #
@@ -12,9 +13,26 @@
 from sshtunnel import SSHTunnelForwarder
 import pymysql
 from str_sql import *
-#通过SSH连接云服务器
+# #通过SSH连接阿里云云服务器
+# server=SSHTunnelForwarder(
+#     ssh_address_or_host=('39.97.97.210',22),    #云服务器地址IP和端口port
+#     ssh_username='root',                         #云服务器登录账号admin
+#     ssh_password='Wjb123258.',         #云服务器登录密码password
+#     remote_bind_address=('localhost',3306)       #数据库服务地址ip,一般为localhost和端口port，一般为3306
+# )
+# #云服务器开启
+# server.start()
+# #云服务器上mysql数据库连接
+# conn=pymysql.connect(host='127.0.0.1',             #此处必须是是127.0.0.1
+#                     port=server.local_bind_port,
+#                     user='root',                  #mysql的登录账号admin
+#                     password='Wa123456.',             #mysql的登录密码pwd
+#                     db='management_db',                   #mysql中要访问的数据表
+#                     charset='utf8')               #表的字符集
+
+#通过SSH连接腾讯云服务器
 server=SSHTunnelForwarder(
-    ssh_address_or_host=('39.97.97.210',22),    #云服务器地址IP和端口port
+    ssh_address_or_host=('42.192.137.58',22),    #云服务器地址IP和端口port
     ssh_username='root',                         #云服务器登录账号admin
     ssh_password='Wjb123258.',         #云服务器登录密码password
     remote_bind_address=('localhost',3306)       #数据库服务地址ip,一般为localhost和端口port，一般为3306
@@ -26,8 +44,10 @@ conn=pymysql.connect(host='127.0.0.1',             #此处必须是是127.0.0.1
                     port=server.local_bind_port,
                     user='root',                  #mysql的登录账号admin
                     password='Wa123456.',             #mysql的登录密码pwd
-                    db='management_db',                   #mysql中要访问的数据表
+                    db='tc_management_db',                   #mysql中要访问的数据表
                     charset='utf8')               #表的字符集
+
+
 
 
 # 2.创建游标
@@ -58,12 +78,15 @@ def password_verify(username, password):
     sql = "select student_password from student_info where student_id='%s' " % (username)
     cursor.execute(sql)
     result = cursor.fetchone()
-    if password == result[0]:
-        # print(1)
-        return True
-    else:
-        # print(0)
+    if result==None:
         return False
+    else:
+        if password == result[0]:
+            # print(1)
+            return True
+        else:
+            # print(0)
+            return False
 
 
 def get_data(sql, quantity=1):
@@ -82,23 +105,23 @@ def write_data(sql):
 
 if __name__ == '__main__':
     print(password_verify('2002','2002'))
-    # m = get_data("select * from evaluate_info where student_id = '2005'", 0)
+    # m = get_data("select * from evaluate_info where student_id = '2001'", 0)
     # print(m , type(m),len(m))
     # # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
     # write_data(sql_evaluate_score_write('2001','111','10'))
-    # course_teacher_info = get_data(sql_message_teacher_info('2001'), 0)
-    # print(course_teacher_info)
-    # l = []
-    # for cour in course_teacher_info:
-    #     l1 = cour[0]
-    #     l2 = cour[1:]
-    #     ls = [l1,l2]
-    #     l.append(ls)
-    #
-    # # course_teacher_info = list(course_teacher_info)
-    # print(l)
+    course_teacher_info = get_data(sql_message_teacher_info('2001'), 0)
+    print(course_teacher_info)
+    l = []
+    for cour in course_teacher_info:
+        l1 = cour[0]
+        l2 = cour[1:]
+        ls = [l1,l2]
+        l.append(ls)
+
+    # course_teacher_info = list(course_teacher_info)
+    print(l)
     # write_data('''insert into message_info (student_id, class_id, message)
     #                        VALUES ("%s","%s","%s")''' % ('2001','111','message_info'))
     # sql = "insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003')
     # write_data("insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003'))
-    print(sql_select_result('2001'))
+    # print(sql_select_result('2001'))

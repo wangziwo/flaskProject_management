@@ -1,3 +1,4 @@
+# encoding: utf-8
 def sql_qu_score(student_id):
     sql = '''  
     SELECT

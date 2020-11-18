@@ -8,11 +8,27 @@
 
 <form method="post">
     {% for info in course_teacher_info %}
-    <label>{{info}}</label><input type="text" name={{ (course_teacher_info.index(info)) }}><br>
+{#        <label>{{ info }}</label><input type="text" name={{ (course_teacher_info.index(info)) }}>#}
+        {{ info[1:] }}
+        <select name={{  (course_teacher_info.index(info))  }}>
+            {% for op in option %}
+                <option value={{ op }}>{{ op }}</option>
+            {% endfor %}
 
+        </select><br>
     {% endfor %}
-    
-{#    <label>用户名2:</label><input type="text" name="username2"><br>#}
+{# {% for info in course_teacher_info %}#}
+{#        <label>{{ info }}</label><input type="text" name={{ (course_teacher_info.index(info)) }}>#}
+{#        <select name={{ info }}>#}
+{#            {% for op in option %}#}
+{#                <option value={{ op }}>{{ op }}</option>#}
+{##}
+{#            {% endfor %}#}
+{##}
+{#        </select><br>#}
+{#    {% endfor %}#}
+
+    {#    <label>用户名2:</label><input type="text" name="username2"><br>#}
     <input type="submit" value="提交"><br>
 </form>
 </body>

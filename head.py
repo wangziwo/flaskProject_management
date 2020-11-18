@@ -1,3 +1,4 @@
+# encoding: utf-8
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 import time
 # 导入wtf扩展的表单类

@@ -1,7 +1,9 @@
+# encoding: utf-8
 from head import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = 'os.urandom(24)'
+# app.config['SECRET_KEY'] = os.urandom(24)
 # # 更改代码立刻显示更新
 # app.DEBUG = True
 # # 更改模板立刻显示更新
@@ -40,7 +42,7 @@ def log_in():
                 # return render_template("manu.html")
                 return redirect(url_for('menu'))
             else:
-                flash('密码错误')
+                flash('账号或密码错误')
         else:
             flash('参数有误')
     return render_template('login.html', form=register_form)
@@ -98,8 +100,11 @@ def evaluate():
         if request.method == 'POST':
             formdict = request.form.to_dict()
             print(formdict)
+            # for info in course_teacher_info:
+            #     print(request.form.get(info[0]))
             for f in formdict:
                 class_id = course_teacher_info[int(f)][0]
+                # class_id = course_teacher_info[int(f)][0]
                 # print(class_id)
                 # print(f,formdict[f],type(f))
                 # print(formdict)
@@ -107,10 +112,10 @@ def evaluate():
                 # sql = "select * from evaluate_info where student_id = '%s'" % stu_id
                 # print(get_data(sql),len(get_data(sql)))
             return '已经评教'
-        return render_template('evaluate.html', course_teacher_info=course_teacher_info, infu_num=infu_num)
+        return render_template('evaluate.html', course_teacher_info=course_teacher_info, infu_num=infu_num,option = list(range(10,0,-1)))
     else:
         return redirect(url_for('log_in'))
-
+# TODO 要求必须全部填上分数
 
 # 学生留言
 @app.route('/message', methods=['GET', 'POST'])
