@@ -76,11 +76,13 @@
 <div id="login">
     <h1>Login</h1>
     <form method="post">
+
         {{ form.csrf_token() }}
         {{ form.username.label }}{{ form.username }} <br>
         {{ form.password.label }}{{ form.password }} <br><br>
-        {#            {{ form.submit }}<br>#}
         <button class="but" type="submit">登录</button>
+        测试账号1：2001 密码：2001<br>
+        测试账号2：2002 密码：2002<br>
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}

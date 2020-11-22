@@ -8,24 +8,28 @@
 </head>
 <style type="text/css">
     .head {
-        background-color: greenyellow;
+        background-color: #556B2F;
         padding: 20px;
         text-align: center;
     }
-    *{
+
+    * {
         padding: 0;
         margin: 0;
     }
-    html,body{
+
+    html, body {
         height: 100%;
     }
-    .wrap{
+
+    .wrap {
         width: 20%;
         height: 100%;
         background-color: #363a45;
         float: left;
     }
-    .header{
+
+    .header {
         width: 100%;
         height: 65px;
         background-color: #44495a;
@@ -34,14 +38,17 @@
         text-align: center;
         line-height: 65px;
     }
-    .nav{
-        width:250px;
+
+    .nav {
+        width: 95%;
         margin: 10px 5px 0;
     }
-    .list{
+
+    .list {
         margin-bottom: 5px;
     }
-    .list h2{
+
+    .list h2 {
         position: relative;
         padding: 15px 0;
         background-color: #3889d4;
@@ -50,144 +57,157 @@
         color: #fff;
         transition: .5s;
     }
-    .list h2.on{
+
+    .list h2.on {
         background-color: #393c4a;
     }
-    .list i{
+
+    .list i {
         position: absolute;
         right: 10px;
         top: 16px;
         border: 8px solid transparent;
-        border-left-color: #fff;/*triangle*/
-        transform:rotate(0deg);
+        border-left-color: #fff; /*triangle*/
+        transform: rotate(0deg);
         transform-origin: 1px 8px;
         transition: .5s;
     }
-    .list i.on{
-        transform:rotate(90deg);
+
+    .list i.on {
+        transform: rotate(90deg);
     }
-    .hide{
+
+    .hide {
         overflow: hidden;
         height: 0;
         transition: .5s;
     }
-    .hide h5{
+
+    .hide h5 {
         padding: 10px 0;
         background-color: #282c3a;
         text-align: center;
-        color:#fff;
-        border-bottom:#42495d;
+        color: #fff;
+        border-bottom: #42495d;
     }
-    .iframe{
+
+    .iframe {
         float: left;
         height: 100%;
         width: 80%;
     }
-.exit
-{
-	display:block;
-	font-weight:bold;
-	color:#FFFFFF;
-	background-color:#98bf21;
-	width:120px;
-	text-align:center;
-	padding:4px;
-	text-decoration:none;
-}
-a.one:link {color:#ff0000;}
-a.one:visited {color:#0000ff;}
-a.one:hover {color:#ffcc00;}
+
+    .exit {
+        display: block;
+        font-weight: bold;
+        color: #FFFFFF;
+        background-color: #3889d4;
+        width: 120px;
+        text-align: center;
+        padding: 4px;
+        text-decoration: none;
+    }
+
+    a.one:link {
+        color: #ff0000;
+    }
+
+    a.one:visited {
+        color: #0000ff;
+    }
+
+    a.one:hover {
+        color: #ffcc00;
+    }
 
 </style>
 <body>
-    <div class="head">
-        <h1>教务管理系统</h1>
+<div class="head">
+    <h1>教务管理系统</h1>
+</div>
+<div class="wrap">
+    <div class="header">导航栏</div>
+    <div class="nav">
+        <ul>
+            <li class="list">
+                <h2><i></i>学生信息</h2>
+                <div class="hide">
+                    <h5><a href="/stu_info" class="one" target="Iframe1">基本信息</a></h5>
+{#                    <h5><a href="/stu_info" class="one" target="Iframe1">学籍信息</a></h5>#}
+                    <h5><a href="/change_pd" class="one" target="Iframe1">密码修改</a></h5>
+
+                </div>
+            </li>
+            <li class="list">
+                <h2><i></i>课程信息</h2>
+                <div class="hide">
+                    <h5><a href="/select" class="one" target="Iframe1">课程正选</a></h5>
+                    <h5><a href="/select_result" class="one" target="Iframe1">选课结果</a></h5>
+                    <h5><a href="/deselect" class="one" target="Iframe1">课程退选</a></h5>
+                    <h5><a href="/schedule" class="one" target="Iframe1">课表查询</a></h5>
+
+                </div>
+            </li>
+            <li class="list">
+                <h2><i></i>考试成绩</h2>
+                <div class="hide">
+                    <h5><a href="/exam_info" class="one" target="Iframe1">考试安排</a></h5>
+                    <h5><a href="/score" class="one" target="Iframe1">课程成绩查询</a></h5>
+
+                </div>
+            </li>
+            <li class="list">
+                <h2><i></i>学生评教</h2>
+                <div class="hide">
+                    <h5><a href="/evaluate" class="one" target="Iframe1">学生评教</a></h5>
+                    <h5><a href="/message" class="one" target="Iframe1">学生留言</a></h5>
+                </div>
+            </li>
+            <li>
+                <a href="/logout" class="exit">退出</a>
+            </li>
+        </ul>
     </div>
-    <div class="wrap">
-        <div class="header">导航栏</div>
-        <div class="nav">
-            <ul>
-                <li class="list">
-                    <h2><i></i>学生信息</h2>
-                    <div class="hide">
-                        <h5><a href="/stu_info" class="one" target="Iframe1">基本信息</a></h5>
-                        <h5><a href="/stu_info" class="one" target="Iframe1">学籍信息</a></h5>
-                        <h5><a href="/change_pd" class="one" target="Iframe1">密码修改</a></h5>
-
-                    </div>
-                </li>
-                <li class="list">
-                    <h2><i></i>课程信息</h2>
-                    <div class="hide">
-                        <h5><a href="/select" class="one" target="Iframe1">课程正选</a></h5>
-                        <h5><a href="/select_result" class="one" target="Iframe1">选课结果</a></h5>
-                        <h5><a href="/deselect" class="one" target="Iframe1">课程退选</a></h5>
-                        <h5><a href="/schedule" class="one" target="Iframe1">课表查询</a></h5>
-
-                    </div>
-                </li>
-                <li class="list">
-                    <h2><i></i>考试成绩</h2>
-                    <div class="hide">
-                        <h5><a href="/exam_info" class="one" target="Iframe1">考试安排</a></h5>
-                        <h5><a href="/score" class="one" target="Iframe1">课程成绩查询</a></h5>
-{#                        <h5><a href="https://www.baidu.com/" class="one" target="Iframe1">等级考试成绩</a></h5>#}
-
-                    </div>
-                </li>
-                <li class="list">
-                    <h2><i></i>学生评教</h2>
-                    <div class="hide">
-                        <h5><a href="/evaluate" class="one" target="Iframe1">学生评教</a></h5>
-                        <h5><a href="/message" class="one" target="Iframe1">学生留言</a></h5>
-                    </div>
-                </li>
-                <li>
-                      <a href="/logout" class="exit" >退出</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="iframe">
+</div>
+<div class="iframe">
     <iframe frameborder="0" name="Iframe1" src="/stu_info" height="100%" width="100%" scrolling="auto">
     </iframe>
-    </div>
-    账号：{{ user_id }}
-    姓名：{{ user_name }}
-    <script>
+</div>
+账号：{{ user_id }}
+姓名：{{ user_name }}
+<script>
 
 
-        (function () {
-            var oList = document.querySelectorAll('.list h2'),
-                oHide = document.querySelectorAll('.hide'),
-                oIcon = document.querySelectorAll('.list i'),
-                lastIndex = 0;
-            for(var i=0;i<oList.length;i++){
-                oList[i].index = i;//自定义属性
-                oList[i].isClick = false;
-                oList[i].initHeight = oHide[i].clientHeight;
-                oHide[i].style.height = '0';
-                oList[i].onclick = function () {
-                    if(this.isClick){
-                        oHide[this.index].style.height = '0';
-                        oIcon[this.index].className = '';
-                        oList[this.index].className = '';
-                        oList[this.index].isClick = false;
-                    }
-                    else{
-                        oHide[lastIndex].style.height = '0';
-                        oIcon[lastIndex].className = '';
-                        oList[lastIndex].className = '';
-                        oHide[this.index].style.height = '220px';
-                        oIcon[this.index].className = 'on';
-                        oList[this.index].className = 'on';
-                        oList[lastIndex].isClick = false;
-                        oList[this.index].isClick = true;
-                        lastIndex = this.index;
-                    }
+    (function () {
+        var oList = document.querySelectorAll('.list h2'),
+            oHide = document.querySelectorAll('.hide'),
+            oIcon = document.querySelectorAll('.list i'),
+            lastIndex = 0;
+        for (var i = 0; i < oList.length; i++) {
+            oList[i].index = i;//自定义属性
+            oList[i].isClick = false;
+            oList[i].initHeight = oHide[i].clientHeight;
+            oHide[i].style.height = '0';
+            oList[i].onclick = function () {
+                if (this.isClick) {
+                    oHide[this.index].style.height = '0';
+                    oIcon[this.index].className = '';
+                    oList[this.index].className = '';
+                    oList[this.index].isClick = false;
+                } else {
+                    oHide[lastIndex].style.height = '0';
+                    oIcon[lastIndex].className = '';
+                    oList[lastIndex].className = '';
+                    oHide[this.index].style.height = '220px';
+                    oIcon[this.index].className = 'on';
+                    oList[this.index].className = 'on';
+                    oList[lastIndex].isClick = false;
+                    oList[this.index].isClick = true;
+                    lastIndex = this.index;
                 }
             }
-        })();
-    </script>
+        }
+    })();
+</script>
 </body>
 </html>

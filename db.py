@@ -13,22 +13,6 @@
 from sshtunnel import SSHTunnelForwarder
 import pymysql
 from str_sql import *
-# #通过SSH连接阿里云云服务器
-# server=SSHTunnelForwarder(
-#     ssh_address_or_host=('39.97.97.210',22),    #云服务器地址IP和端口port
-#     ssh_username='root',                         #云服务器登录账号admin
-#     ssh_password='Wjb123258.',         #云服务器登录密码password
-#     remote_bind_address=('localhost',3306)       #数据库服务地址ip,一般为localhost和端口port，一般为3306
-# )
-# #云服务器开启
-# server.start()
-# #云服务器上mysql数据库连接
-# conn=pymysql.connect(host='127.0.0.1',             #此处必须是是127.0.0.1
-#                     port=server.local_bind_port,
-#                     user='root',                  #mysql的登录账号admin
-#                     password='Wa123456.',             #mysql的登录密码pwd
-#                     db='management_db',                   #mysql中要访问的数据表
-#                     charset='utf8')               #表的字符集
 
 #通过SSH连接腾讯云服务器
 server=SSHTunnelForwarder(
@@ -52,28 +36,7 @@ conn=pymysql.connect(host='127.0.0.1',             #此处必须是是127.0.0.1
 
 # 2.创建游标
 cursor = conn.cursor()
-#
-# #注意%s需要加引号
-# # sql = "select * from t1.userinfo where username='%s' and pwd='%s'" %(user, pwd)
-# username = '1'
-# sql = "select name from stu where stu_id='%s'"%(username)
-# print(sql)
-#
-# # 3.执行sql语句
-# cursor.execute(sql)
-#
-# result=cursor.fetchone() #执行sql语句，返回sql查询成功的记录数目
-# print(result[0],type(result[0]))
-#
-# # 关闭连接，游标和连接都要关闭
-# cursor.close()
-# conn.close()
-#
-# if result:
-#     print('登陆成功')
-# else:
-#     print('登录失败')
-# 密码验证函数
+
 def password_verify(username, password):
     sql = "select student_password from student_info where student_id='%s' " % (username)
     cursor.execute(sql)
@@ -105,23 +68,3 @@ def write_data(sql):
 
 if __name__ == '__main__':
     print(password_verify('2002','2002'))
-    # m = get_data("select * from evaluate_info where student_id = '2001'", 0)
-    # print(m , type(m),len(m))
-    # # write_data('insert into stu values ("2004","li","2004","软件182","软件工程")')
-    # write_data(sql_evaluate_score_write('2001','111','10'))
-    course_teacher_info = get_data(sql_message_teacher_info('2001'), 0)
-    print(course_teacher_info)
-    l = []
-    for cour in course_teacher_info:
-        l1 = cour[0]
-        l2 = cour[1:]
-        ls = [l1,l2]
-        l.append(ls)
-
-    # course_teacher_info = list(course_teacher_info)
-    print(l)
-    # write_data('''insert into message_info (student_id, class_id, message)
-    #                        VALUES ("%s","%s","%s")''' % ('2001','111','message_info'))
-    # sql = "insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003')
-    # write_data("insert into class_info (student_id,course_id) values ('%s','%s')" % ('2001', '003'))
-    # print(sql_select_result('2001'))
