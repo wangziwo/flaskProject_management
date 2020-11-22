@@ -1,3 +1,9 @@
+#############################
+# str_sql.py
+# 长sql语句函数
+#############################
+
+# 学生成绩查询
 def sql_qu_score(student_id):
     sql = '''  
     SELECT
@@ -30,7 +36,7 @@ def sql_qu_score(student_id):
     '''
     return sql.replace('rp_student_id', student_id)
 
-
+#考试信息查询
 def sql_qu_exam(student_id):
     sql = '''
     SELECT

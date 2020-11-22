@@ -1,3 +1,7 @@
+#############################
+# app.py
+# Flask主函数
+#############################
 from head import *
 
 app = Flask(__name__)
@@ -23,7 +27,7 @@ def log_in():
             password = request.form.get('password')
             if password_verify(username=username, password=password) == True:
                 session['username'] = username
-                print(session.get('username'))
+                # print(session.get('username'))
                 return redirect(url_for('menu'))
             else:
                 flash('账号或密码错误')
@@ -46,7 +50,7 @@ def menu():
 def stu_info():
     stu_id = session.get('username')
     info = get_data("select * from student_info where student_id ='%s'" % stu_id)
-    print(info)
+    # print(info)
     if session.get('username'):
         return render_template('stu_info.html', info=info)
     else:
@@ -61,14 +65,14 @@ def evaluate():
         course_teacher_info = get_data(sql_qu_course_teacher_info(stu_id), 0)
         infu_num = len(course_teacher_info)
         sql = "select * from evaluate_info where student_id = '%s'" % stu_id
-        print(get_data(sql), type(get_data(sql)))
+        # print(get_data(sql), type(get_data(sql)))
         if get_data(sql):
             return '已经评教'
 
         # 获取输入框内容
         if request.method == 'POST':
             formdict = request.form.to_dict()
-            print(formdict)
+            # print(formdict)
             for f in formdict:
                 class_id = course_teacher_info[int(f)][0]
                 write_data(sql_evaluate_score_write(stu_id, class_id, formdict[f]))
@@ -100,10 +104,10 @@ def message():
         if request.method == 'POST':
             class_id = request.form.get('teacher')
             message_info = request.form.get('message')
-            print(class_id, message_info)
+            # print(class_id, message_info)
             sql = '''insert into message_info (student_id, class_id, message) 
                        VALUES ("%s","%s","%s")''' % (stu_id, class_id, message_info)
-            print(sql)
+            # print(sql)
             write_data(sql)
             return '留言成功！'
         return render_template('message.html', course_teacher_info=course_teacher_info, info_num=info_num,
@@ -171,7 +175,7 @@ def change_pd():
                 sql = "update student_info set student_password = '%s' where student_id = '%s'" % (
                     new_password, student_id)
                 write_data(sql)
-                print(session.get('username'))
+                # print(session.get('username'))
                 flash('密码修改成功,下次登陆需要使用新密码')
 
             else:
@@ -195,10 +199,10 @@ def select():
             l2 = cour[1:]
             ls = [l1, l2]
             ls_course_info.append(ls)
-        print(course_info)
+        # print(course_info)
         if request.method == 'POST':
             select_list = request.form.getlist('select_info')
-            print("select_list:", select_list)
+            # print("select_list:", select_list)
             for se in select_list:
                 write_data("insert into class_info (student_id,course_id) values ('%s','%s')" % (stu_id, se))
             return '选课成功'
@@ -225,10 +229,10 @@ def deselect():
     if session.get('username'):
         stu_id = session.get('username')
         result = get_data(sql_deselect_info(stu_id), 0)
-        print(result)
+        # print(result)
         if request.method == 'POST':
             deselect_list = request.form.getlist('deselect_info')
-            print("deselect_list:", deselect_list)
+            # print("deselect_list:", deselect_list)
             for de in deselect_list:
                 write_data("delete from class_info  where class_id  = '%s'" % (de))
 

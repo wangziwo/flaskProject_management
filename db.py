@@ -1,4 +1,8 @@
-# encoding: utf-8
+#############################
+# db.py
+# mysql数据库读取和写入函数
+#############################
+
 # # 本地mysql
 # import pymysql
 #
@@ -18,7 +22,7 @@ from str_sql import *
 server=SSHTunnelForwarder(
     ssh_address_or_host=('42.192.137.58',22),    #云服务器地址IP和端口port
     ssh_username='root',                         #云服务器登录账号admin
-    ssh_password='Wjb123258.',         #云服务器登录密码password
+    ssh_password='Wa123456.',         #云服务器登录密码password
     remote_bind_address=('localhost',3306)       #数据库服务地址ip,一般为localhost和端口port，一般为3306
 )
 #云服务器开启

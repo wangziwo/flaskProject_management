@@ -1,3 +1,8 @@
+#############################
+# head.py
+# 头文件
+#############################
+
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 import time
 # 导入wtf扩展的表单类
@@ -35,7 +40,7 @@ class CourseForm(FlaskForm):
 # 定义一个留言信息类
 class MessageForm(FlaskForm):
     teacher = SelectField(
-        label='教师',
+        label='教师：',
         validators=[DataRequired('请选择标签')],
         render_kw={
             'class': 'form-control'
